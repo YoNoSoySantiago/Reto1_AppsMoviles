@@ -4,13 +4,13 @@
     <item
         android:id="@+id/homeItem"
         android:icon="@drawable/baseline_home_black_24dp"
-        android:title="Home" />
+        android:title="@string/home" />
     <item
         android:id="@+id/postItem"
         android:icon="@drawable/baseline_library_add_black_24dp"
-        android:title="Post" />
+        android:title="@string/post" />
     <item
         android:id="@+id/profileItem"
         android:icon="@drawable/baseline_account_circle_black_24dp"
-        android:title="Profile" />
+        android:title="@string/profile" />
 </menu>

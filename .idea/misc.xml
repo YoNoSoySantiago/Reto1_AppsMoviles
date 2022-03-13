@@ -5,9 +5,13 @@
       <map>
         <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1735" />
         <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1735" />
+        <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/layout/activity_login_page.xml" value="0.32518115942028986" />
         <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/layout/fragment_new_home.xml" value="0.17831813576494426" />
-        <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/layout/fragment_new_post.xml" value="0.17831813576494426" />
+        <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/layout/activity_main_menu.xml" value="0.32518115942028986" />
+        <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/layout/fragment_new_home.xml" value="0.36666666666666664" />
+        <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/layout/fragment_new_post.xml" value="0.36666666666666664" />
+        <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/layout/fragment_new_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/layout/postrow.xml" value="0.32518115942028986" />
         <entry key="..\:/ICESI/AppsMoviles/ASProjects/app/src/main/res/menu/home_menu.xml" value="0.36666666666666664" />
       </map>
     </option>
