@@ -16,7 +16,7 @@ class PostsAdapter:RecyclerView.Adapter<PostViewHolder>() {
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val postn = posts[position]
-        holder.posttextRow.text = postn.title
+        holder.postTitleRow.text = postn.title
     }
 
     fun addPost(post:Post){
@@ -24,6 +24,6 @@ class PostsAdapter:RecyclerView.Adapter<PostViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return posts.size
     }
 }

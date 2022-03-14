@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 
 class PostViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
     //UI Controllers
-    var posttextRow:TextView = itemView.findViewById(R.id.postTextRow)
+    var postTitleRow:TextView = itemView.findViewById(R.id.postTitleRow)
+    var postAutorRow:TextView = itemView.findViewById(R.id.postAutorRow)
+    var postCityRow:TextView = itemView.findViewById(R.id.postCityRow)
+    var postDateRow:TextView = itemView.findViewById(R.id.postDateRow)
+    var postDescriptionRow:TextView = itemView.findViewById(R.id.postDescriptionRow)
     //State
 
     init {

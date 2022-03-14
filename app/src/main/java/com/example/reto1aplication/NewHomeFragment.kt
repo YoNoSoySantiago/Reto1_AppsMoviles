@@ -53,8 +53,8 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListerner {
         fun newInstance() = NewHomeFragment()
     }
 
-    override fun onNewPost(title:String,city:String,image:String) {
-        val newPost = Post(UUID.randomUUID().toString(),title,city,image)
+    override fun onNewPost(title:String,autor:String,city:String,date:String,description:String,image:String) {
+        val newPost = Post()
         adapter.addPost(newPost)
     }
 }

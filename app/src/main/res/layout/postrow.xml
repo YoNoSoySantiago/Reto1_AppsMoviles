@@ -3,15 +3,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/postTextRow"
+        android:id="@+id/postTitleRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="No entiendo que estamos haciendo"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Title HERE!!"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/postAvatarRow"
+        app:layout_constraintTop_toBottomOf="@+id/postImageRow" />
+
+    <ImageView
+        android:id="@+id/postImageRow"
+        android:layout_width="0dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_dialog_map" />
+
+    <ImageView
+        android:id="@+id/postAvatarRow"
+        android:layout_width="wrap_content"
+        android:layout_height="108dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postImageRow"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/postCityRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
+        android:text="TextView"
+        android:textColor="#605F5F"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postImageRow" />
+
+    <TextView
+        android:id="@+id/postAutorRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/postAvatarRow"
+        app:layout_constraintTop_toBottomOf="@+id/postTitleRow" />
+
+    <TextView
+        android:id="@+id/postDateRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="1dp"
+        android:text="TextView"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/postAvatarRow"
+        app:layout_constraintTop_toBottomOf="@+id/postAutorRow" />
+
+    <TextView
+        android:id="@+id/postDescriptionRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postAvatarRow" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
