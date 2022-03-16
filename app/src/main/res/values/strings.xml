@@ -10,4 +10,6 @@
     <string name="todo">TODO</string>
     <string name="t_tulo">Título</string>
     <string name="iniciar_sesi_n">Iniciar sesión</string>
+    <string name="spinner_cities">Seleccionar Ciudad</string>
+    <string name="publicar">publicar</string>
 </resources>

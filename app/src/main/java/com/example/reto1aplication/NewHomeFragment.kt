@@ -27,6 +27,7 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListerner {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         _binding = FragmentNewHomeBinding.inflate(inflater,container, false)
         val view = binding.root
@@ -54,7 +55,7 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListerner {
     }
 
     override fun onNewPost(title:String,autor:String,city:String,date:String,description:String,image:String) {
-        val newPost = Post()
+        val newPost = Post(title,autor,city,date,description,image)
         adapter.addPost(newPost)
     }
 }

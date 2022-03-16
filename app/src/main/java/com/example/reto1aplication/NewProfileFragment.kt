@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.reto1aplication.databinding.FragmentNewProfileBinding
 
-class NewProfileFragment : Fragment() {
+class NewProfileFragment (): Fragment() {
     private var _binding: FragmentNewProfileBinding?=null
     private val binding get() = _binding!!
     override fun onCreateView(

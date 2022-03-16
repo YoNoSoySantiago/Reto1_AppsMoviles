@@ -18,13 +18,14 @@ class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val userLogged = intent.getStringExtra("user")
         super.onCreate(savedInstanceState)
         binding = ActivityMainMenuBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
         newHomeFragment = NewHomeFragment.newInstance()
-        newPostFragment = NewPostFragment.newInstance()
+        newPostFragment = NewPostFragment.newInstance(userLogged)
         newProfileFragment = NewProfileFragment.newInstance()
 
         newPostFragment.listener = newHomeFragment
