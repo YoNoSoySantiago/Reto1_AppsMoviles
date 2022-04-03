@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reto1aplication.databinding.FragmentNewHomeBinding
-import java.util.*
+import java.io.File
 
 /**
  * A simple [Fragment] subclass.
@@ -54,8 +54,16 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListerner {
         fun newInstance() = NewHomeFragment()
     }
 
-    override fun onNewPost(title:String,autor:String,city:String,date:String,description:String,image:String) {
-        val newPost = Post(title,autor,city,date,description,image)
+    override fun onNewPost(
+        id:String,
+        title:String,
+        autor:String,
+        city:String,
+        date:String,
+        description:String,
+        image: File?
+    ) {
+        val newPost = Post(id,title,autor,city,date,description,image)
         adapter.addPost(newPost)
     }
 }

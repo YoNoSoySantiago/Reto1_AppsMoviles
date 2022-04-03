@@ -12,4 +12,7 @@
     <string name="iniciar_sesi_n">Iniciar sesión</string>
     <string name="spinner_cities">Seleccionar Ciudad</string>
     <string name="publicar">publicar</string>
+    <string name="editar_perfil">Editar perfil</string>
+    <string name="nombre_del_perfil">Nombre del perfil</string>
+    <string name="cerrar_sesi_n">Cerrar sesión</string>
 </resources>

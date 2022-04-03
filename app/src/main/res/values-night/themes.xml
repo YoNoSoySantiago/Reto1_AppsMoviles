@@ -3,8 +3,8 @@
     <style name="Theme.Reto1Aplication" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/main_black</item>
-        <item name="colorPrimaryVariant">@color/main_red</item>
-        <item name="colorOnPrimary">@color/red_light</item>
+        <item name="colorPrimaryVariant">@color/main_black</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/main_black</item>
         <item name="colorSecondaryVariant">@color/red_light</item>

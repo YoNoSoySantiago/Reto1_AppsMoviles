@@ -1,5 +1,6 @@
 package com.example.reto1aplication
 
+import java.io.File
 import java.util.*
 
 class Post {
@@ -9,12 +10,13 @@ class Post {
     var city:String
     var description:String
     var date: String
-    var image:String
+    var image:File?
 
-    constructor (title:String,autor:String,city:String,date:String,description:String,image:String){
-        this.id = UUID.randomUUID().toString()
+    constructor (id:String, title:String, author:String, city:String, date:String, description:String, image: File?){
+
+        this.id = id
         this.title = title
-        this.autor = autor
+        this.autor = author
         this.city = city
         this.image = image
         this.description = description
