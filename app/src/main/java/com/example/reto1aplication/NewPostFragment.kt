@@ -1,17 +1,14 @@
 package com.example.reto1aplication
 
 import android.Manifest
-import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import com.example.reto1aplication.databinding.FragmentNewPostBinding
 import java.io.File
 import java.text.SimpleDateFormat
@@ -34,6 +32,8 @@ class NewPostFragment(private val userLogged:User): Fragment() {
     private var id:String= ""
     private var image:String=""
     //Listerner
+    private var file:File? =null
+
     var listener: OnNewPostListerner? = null
     
     override fun onCreateView(
@@ -80,8 +80,8 @@ class NewPostFragment(private val userLogged:User): Fragment() {
             if(permissionAccepted){
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 id = UUID.randomUUID().toString()
-                val image = File("${context?.getExternalFilesDir(null)}/photo_post_${id}.png")
-                val uri = FileProvider.getUriForFile(requireContext(),context?.packageName!!,image!!)
+                file = File("${context?.getExternalFilesDir(null)}/photo_post_${id}.png")
+                val uri = FileProvider.getUriForFile(requireContext(),context?.packageName!!,file!!)
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,uri)
                 this.image = uri.toString()
                 Log.e(">>>",uri?.path.toString())
@@ -109,7 +109,8 @@ class NewPostFragment(private val userLogged:User): Fragment() {
 //        val bitMap = result.data?.extras?.get("data") as Bitmap
 //        binding.imageView2.setImageBitmap(bitMap)
         if(result.resultCode == RESULT_OK){
-            val bitmap = BitmapFactory.decodeFile(Uri.parse(image)?.path)
+            Log.e("FIRST URI",image)
+            val bitmap = BitmapFactory.decodeFile(file?.path)
             val thumbnail = Bitmap.createScaledBitmap(bitmap, 256,128,true)
             binding.imageNewPost.setImageBitmap(thumbnail)
 
@@ -118,8 +119,12 @@ class NewPostFragment(private val userLogged:User): Fragment() {
 
     fun onGalleryResult(result: ActivityResult){
         if(result.resultCode == RESULT_OK){
-           val uriImage = result.data?.data
+            val uriImage = result.data?.data
+            val imageFile = File(uriImage?.path)
+            val photoBmp = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uriImage);
             image = uriImage.toString()
+            Log.e("URI",uriImage.toString())
+            Log.e("PATH",image)
             uriImage?.let {
                 binding.imageNewPost.setImageURI(uriImage)
 

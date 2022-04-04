@@ -65,9 +65,15 @@ class NewProfileFragment (private val userLogged:User): Fragment() {
         }
 
         binding.btnGallery.setOnClickListener{
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            galleryLauncher.launch(intent)
+            requestPermissions(arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ),1)
+            if(permissionAccepted) {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*"
+                galleryLauncher.launch(intent)
+            }
         }
 
         return view
