@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -20,7 +21,7 @@ import com.example.reto1aplication.databinding.FragmentNewProfileBinding
 import java.io.File
 import java.util.*
 
-class NewProfileFragment (): Fragment() {
+class NewProfileFragment (private val userLogged:User): Fragment() {
     private var _binding: FragmentNewProfileBinding?=null
     private val binding get() = _binding!!
 
@@ -33,6 +34,13 @@ class NewProfileFragment (): Fragment() {
     ): View? {
         _binding = FragmentNewProfileBinding.inflate(inflater,container,false)
         val view = binding.root
+
+        //Setting
+        if(userLogged.photo!=""){
+            binding.imageProfile.setImageURI(Uri.parse(userLogged.photo))
+        }
+
+        binding.testUserNameProfile.text = userLogged.user
 
         val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult(),:: onCameraResult)
         val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult(),:: onGalleryResult)
@@ -48,6 +56,7 @@ class NewProfileFragment (): Fragment() {
                 file = File("${context?.getExternalFilesDir(null)}/photo_PROFILE_${id}.png")
                 val uri = FileProvider.getUriForFile(requireContext(),context?.packageName!!,file!!)
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,uri)
+                userLogged.photo = uri.toString()
 
                 Log.e(">>>",file?.path.toString())
 
@@ -79,6 +88,7 @@ class NewProfileFragment (): Fragment() {
     fun onGalleryResult(result: ActivityResult){
         if(result.resultCode == Activity.RESULT_OK){
             val uriImage = result.data?.data
+            userLogged.photo = uriImage.toString()
             uriImage?.let {
                 binding.imageProfile.setImageURI(uriImage)
             }
@@ -111,8 +121,7 @@ class NewProfileFragment (): Fragment() {
     }
 
     companion object {
-
         @JvmStatic
-        fun newInstance() = NewProfileFragment()
+        fun newInstance(user:User) = NewProfileFragment(user)
     }
 }

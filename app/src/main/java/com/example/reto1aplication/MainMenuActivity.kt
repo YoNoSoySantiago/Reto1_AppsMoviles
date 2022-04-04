@@ -2,11 +2,9 @@ package com.example.reto1aplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
-import com.example.reto1aplication.databinding.ActivityMainBinding
 import com.example.reto1aplication.databinding.ActivityMainMenuBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -23,10 +21,10 @@ class MainMenuActivity : AppCompatActivity() {
         binding = ActivityMainMenuBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
+        var user = Gson().fromJson(userLogged, User::class.java)
         newHomeFragment = NewHomeFragment.newInstance()
-        newPostFragment = NewPostFragment.newInstance(userLogged)
-        newProfileFragment = NewProfileFragment.newInstance()
+        newPostFragment = NewPostFragment.newInstance(user)
+        newProfileFragment = NewProfileFragment.newInstance(user)
 
         newPostFragment.listener = newHomeFragment
         showFragment(newHomeFragment)
@@ -50,4 +48,13 @@ class MainMenuActivity : AppCompatActivity() {
         transaction.replace(R.id.fragmentContainer,fragment)
         transaction.commit()
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
 }

@@ -7,14 +7,14 @@
 
     <ImageView
         android:id="@+id/imageNewPost"
-        android:layout_width="128dp"
+        android:layout_width="256dp"
         android:layout_height="128dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="@string/todo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_gallery"
-        android:contentDescription="@string/todo" />
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <Button
         android:id="@+id/btn_galery"

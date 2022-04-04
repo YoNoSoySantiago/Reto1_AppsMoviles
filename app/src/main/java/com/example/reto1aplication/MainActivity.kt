@@ -1,11 +1,14 @@
 package com.example.reto1aplication
 
+import android.R
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.Button
+import android.os.Messenger
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.reto1aplication.databinding.ActivityMainBinding
+import com.google.gson.Gson
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,10 +41,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             if(currentUser != null){
+                i.putExtra("user", Gson().toJson(currentUser))
                 startActivity(i)
             }else{
-
-                i.putExtra("user",username)
                 Toast.makeText(this.baseContext,"Datos incorrectos",Toast.LENGTH_LONG).show()
             }
 

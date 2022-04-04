@@ -1,12 +1,16 @@
 package com.example.reto1aplication
 
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reto1aplication.databinding.FragmentNewHomeBinding
+import com.google.gson.Gson
 import java.io.File
 
 /**
@@ -21,7 +25,7 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListerner {
 
 
     //STATE
-    private val adapter = PostsAdapter()
+    private var adapter = PostsAdapter()
 
 
     override fun onCreateView(
@@ -57,13 +61,41 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListerner {
     override fun onNewPost(
         id:String,
         title:String,
-        autor:String,
+        author:User,
         city:String,
         date:String,
         description:String,
-        image: File?
+        image: String
     ) {
-        val newPost = Post(id,title,autor,city,date,description,image)
+        val newPost = Post(id,title,author,city,date,description,image)
         adapter.addPost(newPost)
+    }
+
+    override fun onPause() {
+        super.onPause()
+//        val json = Gson().toJson(adapter)
+//        Log.e(">>>>>",json.toString())
+
+        //shared references
+        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        adapter.onPause(sharedPreferences)
+//        sharedPreferences.edit().putString("currentState",json).apply()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        adapter.onResume(sharedPreferences)
+//        var json = sharedPreferences.getString("currentState","NO_DATA")
+//
+//        if(json != "NO_DATA"){
+//            Log.e("ERROR","WTFFFFFFFFFFFFFFFFFFFFFFF")
+//            Log.e("ERROR",json.toString())
+//            Gson().fromJson(json.toString(),PostsAdapter::class.java)
+//
+//        }else{
+//            Log.e("ERROR","No se encuentra la serialziacion")
+//        }
     }
 }
