@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             Log.e("<<<",json.toString())
             val oldUsers = Gson().fromJson<HashMap<String,User>>(json.toString(),Array<Post>::class.java)
 
-            if(!oldUsers.isEmpty()){
+            if(oldUsers.isNotEmpty()){
                 users = oldUsers
             }
         }else{
@@ -49,11 +49,9 @@ class MainActivity : AppCompatActivity() {
             val email = binding.editTextTextEmailAddress.text.toString()
             val pass = binding.editTextTextPassword2.text.toString()
             var currentUser:User? =null
-            var username =""
             for(user in users.values){
                 if(email.equals(user.email) and pass.equals(user.password)){
                     currentUser = user
-                    username=user.user
                     break
                 }
             }
