@@ -23,7 +23,7 @@ public class PostsAdapter:RecyclerView.Adapter<PostViewHolder>() {
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val postN = posts[position]
 
-        var autor = users[postN.userId]
+        var autor = postN.author
         holder.postTitleRow.text = postN.title
         if (autor != null) {
             holder.postAutorRow.text = autor.user

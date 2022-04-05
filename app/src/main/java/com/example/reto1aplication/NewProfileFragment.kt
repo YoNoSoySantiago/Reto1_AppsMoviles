@@ -90,8 +90,6 @@ class NewProfileFragment (private val userLogged:User): Fragment() {
         fun onCameraResult(result: ActivityResult){
 
         if(result.resultCode == Activity.RESULT_OK){
-
-
             val bitmap = BitmapFactory.decodeFile(file?.path)
             val thumbnail = Bitmap.createScaledBitmap(bitmap, bitmap.width/4,bitmap.height/4,true)
             binding.imageProfile.setImageBitmap(thumbnail)

@@ -62,7 +62,7 @@ class NewPostFragment(private val userLogged:User): Fragment() {
                     binding.textTitulo.text.clear()
                     binding.textDescription.text.clear()
 
-                    it.onNewPost(id,title,userLogged.id,city,date,description,image)
+                    it.onNewPost(id,title,userLogged,city,date,description,image)
                     Toast.makeText(activity,"Guardado",Toast.LENGTH_LONG).show()
 
                     val transaction = parentFragmentManager.beginTransaction()
@@ -164,7 +164,6 @@ class NewPostFragment(private val userLogged:User): Fragment() {
                     break
                 }
             }
-
             permissionAccepted = allGrand
         }
     }
@@ -180,7 +179,7 @@ class NewPostFragment(private val userLogged:User): Fragment() {
         fun onNewPost(
             id:String,
             title:String,
-            authorId:String,
+            author:User,
             city:String,
             date:String,
             description:String,
