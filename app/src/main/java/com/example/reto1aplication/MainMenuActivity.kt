@@ -1,14 +1,16 @@
 package com.example.reto1aplication
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Messenger
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.reto1aplication.databinding.ActivityMainMenuBinding
 import com.google.gson.Gson
+import java.security.AccessController.getContext
+
 
 class MainMenuActivity : AppCompatActivity() {
-
-
     private lateinit var newHomeFragment: NewHomeFragment
     private lateinit var newPostFragment: NewPostFragment
     private lateinit var newProfileFragment: NewProfileFragment
@@ -28,8 +30,6 @@ class MainMenuActivity : AppCompatActivity() {
 
         newPostFragment.listener = newHomeFragment
         showFragment(newHomeFragment)
-
-
 
         binding.navigator.setOnItemSelectedListener { menuItem->
             if(menuItem.itemId == R.id.homeItem){
@@ -56,5 +56,4 @@ class MainMenuActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
-
 }
