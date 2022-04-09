@@ -2,6 +2,7 @@ package com.example.reto1aplication
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
@@ -9,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +20,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.reto1aplication.databinding.FragmentNewProfileBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.lang.Integer.min
+import java.lang.reflect.Type
 import java.util.*
 
 
@@ -29,7 +34,6 @@ class NewProfileFragment (private val userLogged:User): Fragment() {
 
     private var permissionAccepted = false
     private var file:File?=null
-    private var finalImage:File?=null
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -40,8 +44,11 @@ class NewProfileFragment (private val userLogged:User): Fragment() {
         val view = binding.root
 
         //Setting
+        Log.e("FOTO PROFILE",userLogged.photo)
         if(userLogged.photo!=""){
-            binding.imageProfile.setImageURI(Uri.parse(userLogged.photo))
+            val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver , Uri.parse(userLogged.photo))
+            val thumbnail = getCircularBitmap(bitmap)
+            binding.imageProfile.setImageBitmap(thumbnail)
         }
 
         binding.testUserNameProfile.text = userLogged.user
@@ -63,7 +70,6 @@ class NewProfileFragment (private val userLogged:User): Fragment() {
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
 
                 file = File("${context?.getExternalFilesDir(null)}/photoCOMPLETE_PROFILE_${id}.png")
-                finalImage = File("${context?.getExternalFilesDir(null)}/photoFinal_PROFILE_${id}.png")
                 val uri = FileProvider.getUriForFile(requireContext(),context?.packageName!!,file!!)
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,uri)
                 userLogged.photo = uri.toString()
@@ -88,7 +94,10 @@ class NewProfileFragment (private val userLogged:User): Fragment() {
             }
         }
         binding.btnLogOut.setOnClickListener {
-
+            val sharedPreferences = requireActivity().getSharedPreferences("MyPref",0)
+            sharedPreferences.edit().remove("currentUser").apply()
+            val i = Intent(requireContext(), MainActivity::class.java)
+            startActivity(i)
         }
         return view
     }
@@ -186,6 +195,26 @@ class NewProfileFragment (private val userLogged:User): Fragment() {
         _binding = null
     }
 
+    private fun saveUser(){
+        val sharedPreferences = requireContext().getSharedPreferences("MyPref",0)
+        var json = sharedPreferences.getString("allUsers","NO_DATA")
+
+        if(json != "NO_DATA"){
+            val type: Type = object : TypeToken<HashMap<String, User>>() {}.type
+            val users =  Gson().fromJson<HashMap<String, User>>(json, type)
+
+            val userName = userLogged.user
+            users[userName] = userLogged
+
+            val saveJson = Gson().toJson(users)
+            sharedPreferences.edit().putString("allUsers",saveJson).apply()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveUser()
+    }
     companion object {
         @JvmStatic
         fun newInstance(user:User) = NewProfileFragment(user)

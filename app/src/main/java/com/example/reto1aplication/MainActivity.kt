@@ -1,17 +1,16 @@
 package com.example.reto1aplication
 
-import android.R
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Messenger
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.reto1aplication.databinding.ActivityMainBinding
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,24 +20,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED)
-        val sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("MyPref",0)
         var json = sharedPreferences.getString("allUsers","NO_DATA")
 
         if(json != "NO_DATA"){
-            Log.e("<<<",json.toString())
-            val oldUsers = Gson().fromJson<HashMap<String,User>>(json.toString(),Array<Post>::class.java)
+            val type: Type = object : TypeToken<HashMap<String, User>>() {}.type
+            users =  Gson().fromJson(json, type)
 
-            if(oldUsers.isNotEmpty()){
-                users = oldUsers
-            }
-        }else{
-            Log.e("ERROR","No se encuentra la serialziacion")
         }
         if(users.isEmpty()){
             val user1 =  User("Cpasuy06","Carolina Pasuy Pinilla", "alfa@gmail.com","aplicacionesmoviles")
             val user2 =  User("Lapsuy06","Laura Pasuy Pinilla", "beta@gmail.com","aplicacionesmoviles")
-            users.put("Cpasuy06",user1);
-            users.put("Lpasuy06",user2);
+            users["Cpasuy06"] =user1
+            users["Lpasuy06"] =user2
+
+            val json = Gson().toJson(users)
+            sharedPreferences.edit().putString("allUsers",json).apply()
+
         }
 
         super.onCreate(savedInstanceState)
@@ -46,8 +44,17 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        var jsonUser = sharedPreferences.getString("currentUser","NO_DATA")
+        if(jsonUser != "NO_DATA") {
+            val currentUser = Gson().fromJson(jsonUser,User::class.java)
+            if(currentUser!=null){
+                Log.e("LOGING..",jsonUser.toString())
+                startLogIn(currentUser)
+            }
+        }
+
         binding.btnLogin.setOnClickListener() {
-            val i = Intent(this, MainMenuActivity::class.java)
+
             val email = binding.editTextTextEmailAddress.text.toString()
             val pass = binding.editTextTextPassword2.text.toString()
             var currentUser:User? =null
@@ -58,12 +65,21 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             if(currentUser != null){
-                i.putExtra("user", Gson().toJson(currentUser))
-                startActivity(i)
+                val json = Gson().toJson(currentUser)
+                sharedPreferences.edit().putString("currentUser",json).apply()
+
+                startLogIn(currentUser)
+
             }else{
                 Toast.makeText(this.baseContext,"Datos incorrectos",Toast.LENGTH_LONG).show()
             }
 
         }
+    }
+
+    private fun startLogIn(currentUser: User) {
+        val i = Intent(this, MainMenuActivity::class.java)
+        i.putExtra("user", Gson().toJson(currentUser))
+        startActivity(i)
     }
 }

@@ -12,11 +12,13 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-public class PostsAdapter:RecyclerView.Adapter<PostViewHolder>() {
+class PostsAdapter:RecyclerView.Adapter<PostViewHolder>() {
     private var posts = ArrayList<Post>()
     private var users = HashMap<String,User>()
     private lateinit var contentResolver:ContentResolver
@@ -38,24 +40,19 @@ public class PostsAdapter:RecyclerView.Adapter<PostViewHolder>() {
         holder.postDescriptionRow.text = postN.description
         if(autor.photo!=""){
             val uri = Uri.parse(autor.photo)
-            Log.e("URI",uri.toString())
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,uri)
             val thumbnail = getCircularBitmap(bitmap)
             holder.postAvatarRow.setImageBitmap(thumbnail)
         }
 
        if(postN.image!=""){
-
            val uri = Uri.parse(postN.image)
-           Log.e("URI",uri.toString())
-
            holder.postImageRow.setImageURI(uri)
        }
     }
 
     fun onPause(sharedPreferences: SharedPreferences){
         val json = Gson().toJson(posts)
-        Log.e(">>>>>",json.toString())
         //shared references
         sharedPreferences.edit().putString("currentPosts",json).apply()
     }
@@ -65,33 +62,24 @@ public class PostsAdapter:RecyclerView.Adapter<PostViewHolder>() {
         this.contentResolver = contentResolver
         if(json != "NO_DATA"){
             if(posts.size==0){
-                Log.e("ERROR",json.toString())
-                val array = Gson().fromJson<Array<Post>>(json.toString(),Array<Post>::class.java)
+                val array = Gson().fromJson(json.toString(),Array<Post>::class.java)
                 val oldPosts = ArrayList(array.toMutableList())
                 if(oldPosts.isNotEmpty()){
                     posts = oldPosts
                 }
             }
-        }else{
-            Log.e("ERROR","No se encuentra la serialziacion de posts")
         }
 
         json = sharedPreferences.getString("allUsers","NO_DATA")
 
         if(json != "NO_DATA"){
-            Log.e("<<<",json.toString())
-            val oldUsers = Gson().fromJson<HashMap<String,User>>(json.toString(),Array<Post>::class.java)
+            val type: Type = object : TypeToken<HashMap<String, User>>() {}.type
+            users =  Gson().fromJson(json, type)
 
-            if(oldUsers.isNotEmpty()){
-                users = oldUsers
-            }
-        }else{
-            Log.e("ERROR","No se encuentra la serialziacion de usuarios")
         }
     }
     fun addPost(post:Post){
         posts.add(post)
-        Log.e("AMMOUNT",posts.size.toString())
     }
 
     override fun getItemCount(): Int {

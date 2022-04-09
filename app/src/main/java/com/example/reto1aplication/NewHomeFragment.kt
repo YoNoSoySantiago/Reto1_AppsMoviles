@@ -43,7 +43,7 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListener {
 
         postRecycler.adapter = adapter
 
-        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences("MyPref",0)
         context?.contentResolver?.let { adapter.onResume(sharedPreferences, it) }
         return view
     }
@@ -76,7 +76,7 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListener {
     override fun onPause() {
         super.onPause()
 
-        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences("MyPref",0)
         adapter.onPause(sharedPreferences)
     }
 

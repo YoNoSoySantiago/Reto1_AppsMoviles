@@ -51,11 +51,10 @@ class NewPostFragment(private val userLogged:User): Fragment() {
                 //Aqui va la clase
 
                 val title = binding.textTitulo.text.toString()
-                val author = this.userLogged.toString()
                 val city = binding.spinnerCities.selectedItem.toString()
                 val date = getCurrentDateTime().toString("yyyy/MM/dd HH:mm:ss")
                 val description = binding.textDescription.text.toString()
-                if(title.isEmpty() or author.isEmpty() or city.isEmpty() or date.isEmpty() or description.isEmpty()){
+                if(image.isEmpty() or title.isEmpty() or city.isEmpty() or date.isEmpty() or description.isEmpty()){
                     Toast.makeText(activity,"Datos incompletos",Toast.LENGTH_LONG).show()
                 }else{
                     binding.textTitulo.text.clear()
@@ -92,7 +91,6 @@ class NewPostFragment(private val userLogged:User): Fragment() {
                 val uri = FileProvider.getUriForFile(requireContext(),context?.packageName!!,file!!)
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,uri)
                 this.image = uri.toString()
-                Log.e(">>>",uri?.path.toString())
 
                 cameraLauncher.launch(intent)
             }
