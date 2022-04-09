@@ -1,5 +1,7 @@
 package com.example.reto1aplication
 
+import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Messenger
@@ -18,6 +20,8 @@ class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED)
+
         val userLogged = intent.getStringExtra("user")
         super.onCreate(savedInstanceState)
         binding = ActivityMainMenuBinding.inflate(layoutInflater)
@@ -41,6 +45,7 @@ class MainMenuActivity : AppCompatActivity() {
             }
             true
         }
+
     }
 
     fun showFragment(fragment: Fragment){

@@ -1,24 +1,24 @@
 package com.example.reto1aplication
 
 import android.content.Context
+import android.graphics.*
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reto1aplication.databinding.FragmentNewHomeBinding
-import com.google.gson.Gson
-import java.io.File
 
 /**
  * A simple [Fragment] subclass.
  * Use the [NewHomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListerner {
+class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListener {
 
     private var _binding: FragmentNewHomeBinding?=null
     private val binding get() =_binding!!
@@ -44,7 +44,7 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListerner {
         postRecycler.adapter = adapter
 
         val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
-        adapter.onResume(sharedPreferences)
+        context?.contentResolver?.let { adapter.onResume(sharedPreferences, it) }
         return view
     }
 
@@ -80,8 +80,4 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListerner {
         adapter.onPause(sharedPreferences)
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//
-//    }
 }

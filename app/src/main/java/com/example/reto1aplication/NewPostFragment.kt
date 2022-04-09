@@ -1,7 +1,6 @@
 package com.example.reto1aplication
 
 import android.Manifest
-import android.R.attr.data
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -37,7 +36,7 @@ class NewPostFragment(private val userLogged:User): Fragment() {
     //Listerner
     private var file:File? =null
 
-    var listener: OnNewPostListerner? = null
+    var listener: OnNewPostListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +61,9 @@ class NewPostFragment(private val userLogged:User): Fragment() {
                     binding.textTitulo.text.clear()
                     binding.textDescription.text.clear()
 
-                    it.onNewPost(id,title,userLogged,city,date,description,image)
+                    image?.let { it1 ->
+                        it.onNewPost(id,title,userLogged,city,date,description,it1)
+                    }
                     Toast.makeText(activity,"Guardado",Toast.LENGTH_LONG).show()
 
                     val transaction = parentFragmentManager.beginTransaction()
@@ -120,8 +121,8 @@ class NewPostFragment(private val userLogged:User): Fragment() {
         if(result.resultCode == RESULT_OK){
 
             val bitmap = BitmapFactory.decodeFile(file?.path)
-            val thumbnail = Bitmap.createScaledBitmap(bitmap, 256,128,true)
-            binding.imageNewPost.setImageBitmap(thumbnail)
+            //val thumbnail = Bitmap.createScaledBitmap(bitmap, 256,128,true)
+            binding.imageNewPost.setImageBitmap(bitmap)
 
         }
     }
@@ -137,8 +138,7 @@ class NewPostFragment(private val userLogged:User): Fragment() {
             }
             val uriImage = result.data?.data
             image = uriImage.toString()
-            Log.e("URI",uriImage.toString())
-            Log.e("PATH",image)
+
             uriImage?.let {
                 binding.imageNewPost.setImageURI(uriImage)
 
@@ -175,7 +175,7 @@ class NewPostFragment(private val userLogged:User): Fragment() {
         _binding = null
     }
 
-    interface  OnNewPostListerner{
+    interface  OnNewPostListener{
         fun onNewPost(
             id:String,
             title:String,

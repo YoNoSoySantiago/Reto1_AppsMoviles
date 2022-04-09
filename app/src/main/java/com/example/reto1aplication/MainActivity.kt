@@ -3,6 +3,7 @@ package com.example.reto1aplication
 import android.R
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Messenger
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private var users = HashMap<String,User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED)
         val sharedPreferences = getPreferences(Context.MODE_PRIVATE)
         var json = sharedPreferences.getString("allUsers","NO_DATA")
 
