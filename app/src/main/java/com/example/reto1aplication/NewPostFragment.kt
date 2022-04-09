@@ -20,9 +20,13 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.reto1aplication.databinding.FragmentNewPostBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.File
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class NewPostFragment(private val userLogged:User): Fragment() {
@@ -33,8 +37,10 @@ class NewPostFragment(private val userLogged:User): Fragment() {
     //STATE
     private var id:String= ""
     private var image:String=""
+    private lateinit var users:HashMap<String,User>
     //Listerner
     private var file:File? =null
+
 
     var listener: OnNewPostListener? = null
 
@@ -44,7 +50,7 @@ class NewPostFragment(private val userLogged:User): Fragment() {
     ): View? {
         _binding = FragmentNewPostBinding.inflate(inflater,container,false)
         var view = binding.root
-        val newPostFragment = NewPostFragment.newInstance(userLogged)
+        val newPostFragment = newInstance(userLogged)
         binding.btnNewPost.setOnClickListener{
 
             listener?.let{
@@ -61,7 +67,7 @@ class NewPostFragment(private val userLogged:User): Fragment() {
                     binding.textDescription.text.clear()
 
                     image?.let { it1 ->
-                        it.onNewPost(id,title,userLogged,city,date,description,it1)
+                        it.onNewPost(id,title,userLogged.id,city,date,description,it1)
                     }
                     Toast.makeText(activity,"Guardado",Toast.LENGTH_LONG).show()
 
@@ -114,8 +120,6 @@ class NewPostFragment(private val userLogged:User): Fragment() {
     }
 
     fun onCameraResult(result: ActivityResult){
-//        val bitMap = result.data?.extras?.get("data") as Bitmap
-//        binding.imageView2.setImageBitmap(bitMap)
         if(result.resultCode == RESULT_OK){
 
             val bitmap = BitmapFactory.decodeFile(file?.path)
@@ -177,7 +181,7 @@ class NewPostFragment(private val userLogged:User): Fragment() {
         fun onNewPost(
             id:String,
             title:String,
-            author:User,
+            authorId:String,
             city:String,
             date:String,
             description:String,
@@ -185,9 +189,21 @@ class NewPostFragment(private val userLogged:User): Fragment() {
         )
     }
 
+    override fun onResume() {
+        super.onResume()
+        val sharedPreferences = requireContext().getSharedPreferences("MyPref",0)
+        var json = sharedPreferences.getString("allUsers","NO_DATA")
+
+        if(json != "NO_DATA"){
+            val type: Type = object : TypeToken<HashMap<String, User>>() {}.type
+            users =  Gson().fromJson(json, type)
+        }else{
+            Log.e("ERROR","NO DATA IN USERS>>>NewPost")
+        }
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(user: User) = NewPostFragment(user)
-
     }
 }

@@ -2,7 +2,7 @@ package com.example.reto1aplication
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -35,6 +36,7 @@ class NewProfileFragment (private val userLogged:User): Fragment() {
     private var permissionAccepted = false
     private var file:File?=null
 
+    val PIC_CROP = 1
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,6 +100,22 @@ class NewProfileFragment (private val userLogged:User): Fragment() {
             sharedPreferences.edit().remove("currentUser").apply()
             val i = Intent(requireContext(), MainActivity::class.java)
             startActivity(i)
+        }
+
+        binding.btnEditUserName.setOnClickListener{
+            if(binding.editTextTextPersonName.visibility==View.INVISIBLE){
+                binding.editTextTextPersonName.visibility = View.VISIBLE
+                binding.testUserNameProfile.visibility = View.INVISIBLE
+                binding.btnEditUserName.text = "CONFIRMAR"
+            }else{
+                if(binding.editTextTextPersonName.text.isNotEmpty()){
+                    userLogged.user = binding.editTextTextPersonName.text.toString()
+                    binding.testUserNameProfile.text = userLogged.user
+                    saveUser()
+                }else{
+                    Toast.makeText(activity,"Datos incompletos", Toast.LENGTH_LONG).show()
+                }
+            }
         }
         return view
     }
@@ -203,18 +221,47 @@ class NewProfileFragment (private val userLogged:User): Fragment() {
             val type: Type = object : TypeToken<HashMap<String, User>>() {}.type
             val users =  Gson().fromJson<HashMap<String, User>>(json, type)
 
-            val userName = userLogged.user
-            users[userName] = userLogged
+            users[userLogged.id]?.photo = userLogged.photo
+            users[userLogged.id]?.user  = userLogged.user
 
             val saveJson = Gson().toJson(users)
             sharedPreferences.edit().putString("allUsers",saveJson).apply()
         }
+        binding.editTextTextPersonName.visibility = View.INVISIBLE
+        binding.testUserNameProfile.visibility = View.VISIBLE
+        binding.btnEditUserName.text = "EDITAR USERNAME"
     }
+    private fun performCrop(picUri: Uri) {
+        try {
+            val cropIntent = Intent("com.android.camera.action.CROP")
+            // indicate image type and Uri
+            cropIntent.setDataAndType(picUri, "image/*")
+            // set crop properties here
+            cropIntent.putExtra("crop", true)
+            // indicate aspect of desired crop
+            cropIntent.putExtra("aspectX", 1)
+            cropIntent.putExtra("aspectY", 1)
+            // indicate output X and Y
+            cropIntent.putExtra("outputX", 128)
+            cropIntent.putExtra("outputY", 128)
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true)
+            // start the activity - we handle returning in onActivityResult
 
+            startActivityForResult(cropIntent, PIC_CROP)
+        } // respond to users whose devices do not support the crop action
+        catch (anfe: ActivityNotFoundException) {
+            // display an error message
+            val errorMessage = "Whoops - your device doesn't support the crop action!"
+            //val toast: Toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
+            //toast.show()
+        }
+    }
     override fun onPause() {
         super.onPause()
         saveUser()
     }
+
     companion object {
         @JvmStatic
         fun newInstance(user:User) = NewProfileFragment(user)

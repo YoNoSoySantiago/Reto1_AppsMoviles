@@ -63,13 +63,13 @@ class NewHomeFragment : Fragment(),NewPostFragment.OnNewPostListener {
     override fun onNewPost(
         id:String,
         title:String,
-        author:User,
+        authorId:String,
         city:String,
         date:String,
         description:String,
         image: String
     ) {
-        val newPost = Post(id,title,author,city,date,description,image)
+        val newPost = Post(id,title,authorId,city,date,description,image)
         adapter.addPost(newPost)
     }
 

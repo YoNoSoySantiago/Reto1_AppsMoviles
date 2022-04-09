@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity() {
         if(users.isEmpty()){
             val user1 =  User("Cpasuy06","Carolina Pasuy Pinilla", "alfa@gmail.com","aplicacionesmoviles")
             val user2 =  User("Lapsuy06","Laura Pasuy Pinilla", "beta@gmail.com","aplicacionesmoviles")
-            users["Cpasuy06"] =user1
-            users["Lpasuy06"] =user2
+            users[user1.id] =user1
+            users[user2.id] =user2
 
             val json = Gson().toJson(users)
             sharedPreferences.edit().putString("allUsers",json).apply()
@@ -48,38 +48,44 @@ class MainActivity : AppCompatActivity() {
         if(jsonUser != "NO_DATA") {
             val currentUser = Gson().fromJson(jsonUser,User::class.java)
             if(currentUser!=null){
-                Log.e("LOGING..",jsonUser.toString())
                 startLogIn(currentUser)
             }
         }
 
-        binding.btnLogin.setOnClickListener() {
+        binding.btnLogin.setOnClickListener {
 
             val email = binding.editTextTextEmailAddress.text.toString()
             val pass = binding.editTextTextPassword2.text.toString()
-            var currentUser:User? =null
-            for(user in users.values){
-                if(email.equals(user.email) and pass.equals(user.password)){
-                    currentUser = user
-                    break
+            if(pass.isNotEmpty() and email.isNotEmpty()){
+                var currentUser:User? =null
+                for(user in users.values){
+                    if(email.equals(user.email) and pass.equals(user.password)){
+                        currentUser = user
+                        break
+                    }
                 }
-            }
-            if(currentUser != null){
-                val json = Gson().toJson(currentUser)
-                sharedPreferences.edit().putString("currentUser",json).apply()
-
-                startLogIn(currentUser)
-
+                if(currentUser != null){
+                    val json = Gson().toJson(currentUser)
+                    sharedPreferences.edit().putString("currentUser",json).apply()
+                    startLogIn(currentUser)
+                }else{
+                    Toast.makeText(this.baseContext,"Datos incorrectos",Toast.LENGTH_LONG).show()
+                }
             }else{
-                Toast.makeText(this.baseContext,"Datos incorrectos",Toast.LENGTH_LONG).show()
+                Toast.makeText(this.baseContext,"Datos incompletos",Toast.LENGTH_LONG).show()
             }
-
         }
     }
+
+
 
     private fun startLogIn(currentUser: User) {
         val i = Intent(this, MainMenuActivity::class.java)
         i.putExtra("user", Gson().toJson(currentUser))
         startActivity(i)
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
     }
 }

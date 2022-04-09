@@ -6,7 +6,6 @@ import android.graphics.*
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -32,17 +31,21 @@ class PostsAdapter:RecyclerView.Adapter<PostViewHolder>() {
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val postN = posts[position]
 
-        var autor = postN.author
+        var author = users[postN.authorId]
         holder.postTitleRow.text = postN.title
-        holder.postAutorRow.text = autor.user
+        if (author != null) {
+            holder.postAutorRow.text = author.user
+        }
         holder.postCityRow.text = postN.city
         holder.postDateRow.text = postN.date
         holder.postDescriptionRow.text = postN.description
-        if(autor.photo!=""){
-            val uri = Uri.parse(autor.photo)
-            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,uri)
-            val thumbnail = getCircularBitmap(bitmap)
-            holder.postAvatarRow.setImageBitmap(thumbnail)
+        if (author != null) {
+            if(author.photo!=""){
+                val uri = Uri.parse(author.photo)
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,uri)
+                val thumbnail = getCircularBitmap(bitmap)
+                holder.postAvatarRow.setImageBitmap(thumbnail)
+            }
         }
 
        if(postN.image!=""){
@@ -75,7 +78,6 @@ class PostsAdapter:RecyclerView.Adapter<PostViewHolder>() {
         if(json != "NO_DATA"){
             val type: Type = object : TypeToken<HashMap<String, User>>() {}.type
             users =  Gson().fromJson(json, type)
-
         }
     }
     fun addPost(post:Post){
