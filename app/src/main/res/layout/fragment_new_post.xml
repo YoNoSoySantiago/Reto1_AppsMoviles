@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
+        app:srcCompat="@android:drawable/ic_menu_upload_you_tube" />
 
     <Button
         android:id="@+id/btn_galery"
@@ -23,7 +23,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/galer_a"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/btnCamera"
         app:layout_constraintTop_toBottomOf="@+id/imageNewPost" />
 
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/publicar"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -74,7 +74,7 @@
         android:layout_marginStart="128dp"
         android:layout_marginTop="16dp"
         android:text="@string/c_mara"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageNewPost" />
